@@ -1,4 +1,5 @@
 import random
+import math
 
 
 def f(x):
@@ -11,18 +12,6 @@ def f(x):
     return x**2
 
 
-def random_num(start, end):
-    """
-    random_num computes a random number in the range [start;end]
-    
-    :param start: the starting value
-    :param end: the ending value
-    :return: a floating-point number between start and end
-    """
-    return random.randrange(start, end)
-
-
-
 def calculate_integral(xmin, xmax, samples):
     """
     calculate_integral is the function responsible for actually approximating the integral of f(x)
@@ -33,18 +22,39 @@ def calculate_integral(xmin, xmax, samples):
 
     :return: An estimate of the definite integral in [xmin; xmax]
     """
-    # Step 1. Take random samples of the function values
-    values = []
-
+    # Step 1. Generate random x-values
+    xrand = []
+    
     for _ in range(samples):
-        values.append(random_num(xmin, xmax))
+        xrand.append(random.uniform(xmin, xmax))
     
     # Step 2. Calculate the average of all the values.
     average = 0
 
-    for value in values:
-        average += value
+    for x in xrand:
+        average += f(x)
     average /= samples
 
     # Step 3. Return the average multiplied by the range
     return average * (xmax - xmin)
+
+
+def main():
+    
+    while True:
+        runs = int(input("[*] Please enter the amount of times to approximate the integral (averaging): "))
+        samples = int(input("[*] Amount of random samples: "))
+        min = int(input("[*] Minimum x-value: "))
+        max = int(input("[*] Maximum x-value: "))
+        
+        approximation = 0
+        
+        for _ in range(runs):
+            approximation += calculate_integral(min, max, samples)
+        approximation /= runs
+        
+        print("[+] Approximate definite integral value: {}".format(approximation))
+    
+    
+if __name__ == "__main__":
+    main()
